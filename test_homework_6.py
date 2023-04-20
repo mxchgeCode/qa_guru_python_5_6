@@ -7,7 +7,7 @@ def test_dark_theme_by_time():
     """
     current_time = time(hour=23)
 
-    if current_time.hour < 7 or current_time.hour > 22:
+    if 22 <= current_time.hour or current_time.hour <= 6:
         is_dark_theme = True
     else:
         is_dark_theme = False
@@ -24,8 +24,7 @@ def test_dark_theme_by_time_and_user_choice():
     """
     current_time = time(hour=16)
     dark_theme_enabled_by_user = True
-
-    if current_time.hour < 7 or current_time.hour > 22:
+    if 22 <= current_time.hour or current_time.hour <= 6:
         if dark_theme_enabled_by_user:
             is_dark_theme = True
         else:
@@ -54,9 +53,8 @@ def test_find_suitable_user():
 
     suitable_users = []
     for k in users:
-        for r, t in k.items():
-            if type(t) == int and t < 20:
-                suitable_users.append(k)
+        if k['age'] < 20:
+            suitable_users.append(k)
 
     assert suitable_users == [
         {"name": "Stanislav", "age": 15},
@@ -78,32 +76,22 @@ def test_readable_function():
     open_browser(browser_name="Chrome")
     go_to_companyname_homepage(page_url="https://companyname.com")
     find_registration_button_on_login_page(page_url="https://companyname.com/login", button_text="Register")
-    assert 1==1
-
-
-def print_a_name(input1, input2, input3, k):
-    input1 = input1.title().replace('_', ' ')
-    if k == 1:
-        return f'{input1} [{input2}]'
-    elif k ==2:
-        return f'{input1} [{input2}]'
-    elif k ==3:
-        return f'{input1} [{input2}, {input3}]'
 
 
 def open_browser(browser_name):
-    actual_result = print_a_name(open_browser.__name__, browser_name, 0, 1)
-    print(actual_result)
+    actual_result = open_browser.__name__.replace("_", " ").title() + f" [{browser_name}]"
+    print(end='\n')
+    print(actual_result, end='\n')
     assert actual_result == "Open Browser [Chrome]"
 
 
 def go_to_companyname_homepage(page_url):
-    actual_result = print_a_name(go_to_companyname_homepage.__name__, page_url, 0, 2)
-    print(actual_result)
+    actual_result = go_to_companyname_homepage.__name__.replace("_", " ").title() + f" [{page_url}]"
+    print(actual_result, end='\n')
     assert actual_result == "Go To Companyname Homepage [https://companyname.com]"
 
 
 def find_registration_button_on_login_page(page_url, button_text):
-    actual_result = print_a_name(find_registration_button_on_login_page.__name__, page_url, button_text, 3)
-    print(actual_result)
+    actual_result = find_registration_button_on_login_page.__name__.replace("_", " ").title() + f" [{page_url}, {button_text}]"
+    print(actual_result, end='\n')
     assert actual_result == "Find Registration Button On Login Page [https://companyname.com/login, Register]"
